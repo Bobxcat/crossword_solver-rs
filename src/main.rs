@@ -1,16 +1,17 @@
-use std::{
-    array,
-    cmp::Ordering,
-    collections::{BinaryHeap, HashMap, HashSet},
-    fs, iter,
-};
+use std::{array, collections::HashSet, fs, iter};
 
 use itertools::{Itertools, iproduct};
 use rayon::prelude::*;
 
 /// The nth bit represents if the number `n` is possible in this cell
-#[derive(Clone, Copy, PartialEq, Eq)]
+#[derive(Clone, Copy, Eq)]
 struct Cell(u16);
+
+impl PartialEq for Cell {
+    fn eq(&self, other: &Self) -> bool {
+        self.important_bits() == other.important_bits()
+    }
+}
 
 impl std::fmt::Debug for Cell {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
@@ -41,6 +42,13 @@ impl Cell {
 
     fn none_possible() -> Self {
         Self(0)
+    }
+
+    /// The internal representation without the bits that don't carry information
+    ///
+    /// Only the bits `1` through `9` are important
+    fn important_bits(&self) -> u16 {
+        self.0 & 0b1111111110
     }
 
     fn is_possible(&self, num: u8) -> bool {
