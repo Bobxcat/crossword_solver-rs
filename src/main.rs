@@ -71,18 +71,6 @@ impl Cell {
     fn num_possibilities(&self) -> usize {
         self.possibilities().len()
     }
-
-    fn both_possible(self, other: Self) -> Self {
-        Self(self.0 & other.0)
-    }
-
-    fn not_possible(self) -> Self {
-        Self(!self.0)
-    }
-
-    fn one_possible(self, other: Self) -> Self {
-        Self(self.0 ^ other.0)
-    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -99,21 +87,6 @@ enum SquareIdx {
 }
 
 impl SquareIdx {
-    fn to_idx(self) -> usize {
-        use SquareIdx::*;
-        match self {
-            TL => 0,
-            TM => 1,
-            TR => 2,
-            ML => 3,
-            MM => 4,
-            MR => 5,
-            BL => 6,
-            BM => 7,
-            BR => 8,
-        }
-    }
-
     fn from_idx(idx: usize) -> Self {
         use SquareIdx::*;
         match idx {
@@ -127,6 +100,21 @@ impl SquareIdx {
             7 => BM,
             8 => BR,
             _ => panic!(),
+        }
+    }
+
+    fn to_idx(self) -> usize {
+        use SquareIdx::*;
+        match self {
+            TL => 0,
+            TM => 1,
+            TR => 2,
+            ML => 3,
+            MM => 4,
+            MR => 5,
+            BL => 6,
+            BM => 7,
+            BR => 8,
         }
     }
 
